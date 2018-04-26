@@ -53,7 +53,7 @@ class NN:
             for k in range(self.no):
                 self.wo[j][k] = rand(-2.0, 2.0)
 
-        # 最后建立动量因子（矩阵）
+        # 最后建立动量因子（偏置）（矩阵）
         self.ci = makeMatrix(self.ni, self.nh)
         self.co = makeMatrix(self.nh, self.no)
 
@@ -106,7 +106,7 @@ class NN:
         for j in range(self.nh):
             for k in range(self.no):
                 change = output_deltas[k]*self.ah[j]
-                self.wo[j][k] = self.wo[j][k] + N*change + M*self.co[j][k]
+                self.wo[j][k] = self.wo[j][k] + N*change + M*self.co[j][k] #N: 学习速率(learning rate) M: 动量因子(momentum factor)
                 self.co[j][k] = change
                 #print(N*change, M*self.co[j][k])
 
@@ -132,7 +132,7 @@ class NN:
         for p in patterns:
             target = flowerLables[(p[1].index(1))]  #Python index(str) 方法检测字符串中是否包含子字符串 str,返回str的位置
             result = self.update(p[0])
-            index = result.index(max(result))
+            index = result.index(max(result))   #one hot向量最大的值就是1，找到最大的然后转化为其本来对应的标签
             print(p[0], ':', target, '->', flowerLables[index])
             count += (target == flowerLables[index])
             # result_str = flowerLables[index]
